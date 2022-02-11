@@ -1,0 +1,239 @@
+/* FONT CSS IMPORT */
+
+@font-face {
+    font-family: "Novar";
+    src: url("../fonts/Novar.ttf");
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap');
+
+/* RESET & GLOBAL CSS */
+
+*, ::before, ::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+html{
+    font-family: 'Roboto', sans-serif;
+  
+}
+
+body {
+    overflow-x: hidden;
+}
+
+a { color:black; }
+
+/* HEADER CSS */
+
+header nav{
+    
+    display: flex;
+    justify-content: space-between;
+    margin: 35px;
+
+}
+
+
+
+header nav ul{
+    list-style-type: none;
+    display: flex;
+
+}
+
+header nav ul li{
+    flex: auto;
+    text-align: center;
+    position: relative;
+    font-size: 40px;    
+}
+
+header nav a{
+    display: block;
+    text-decoration: none;
+    color: black;
+    border-bottom: 2px solid transparent;
+    padding: 10px 0px;
+    font-size: 1rem;
+    transition: all 0.4s ease-in-out;
+    padding: 0 40px;
+}
+
+header .logo {
+    font-size: 1.1rem;
+
+}
+
+header ul a:hover{
+    color: #4ECDC4;
+}
+
+/* MAIN CSS */
+
+main {
+    min-height: 80vh;
+    background-color: brown;
+}
+
+/* FORMULAIRE CONNEXION & INSCRIPTION & PROFIL CSS */
+
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 16px; 
+  }
+  
+.center h1{
+    font-size: 20px;
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid silver;
+  }
+  
+.center form{
+    padding: 0 40px;
+  }
+
+form .txt_field{
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin: 30px 0;
+    }
+
+.pass{
+    margin: -5px 0 20px 5px;
+    color: #a6a6a6;
+    cursor: pointer;
+    }
+    
+.pass:hover{
+    text-decoration: underline;
+    }
+         
+.txt_field input{
+    width: 100%;
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+    }
+
+.center input[type="submit"]{
+    margin-top:5px;
+    width: 100%;
+    height: 50px;
+    background: #2691d9;
+    color: white;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    }
+  
+input[type="submit"]:hover{
+    background-color: #2691d9;
+    color: white;
+    border-color: white;
+    transition: .5s;
+  }
+
+.signup_link{
+    margin: 30px 0;
+    text-align: center;
+    font-size: 16px;
+    color: #666666;
+}
+
+.signup_link a{
+    color: #2691d9;
+    text-decoration: none;
+  }
+  
+#warning {
+    font-size: 13px;
+    text-align: center;
+    margin: 10px 10px;
+    color:rgb(207, 89, 89);
+}
+  
+/* ERREUR CSS */
+
+.error_php {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 20px;
+    color: rgb(207, 89, 89);
+}
+
+.error2_php {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 20px;
+    color: rgb(207, 89, 89);
+}
+
+/* SUCCES PHP */
+
+.success_php {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 20px;
+    color: rgb(22, 165, 70);
+}
+
+/* FOOTER CSS */
+
+footer {
+    background-color: black;
+    min-inline-size: 70rem;
+    position:absolute;
+    width: 100%;
+    text-align: center;
+
+}
+
+footer ul li {
+    display: inline-block;
+    text-align: center;
+    padding: 1.4%;
+}
+
+.bar_footer {
+    font-size: 1rem;
+    color: white;
+}
+
+footer ul li a{
+	color: white;
+    font-size: 1rem;
+	text-decoration: none;
+    margin-left: 30px;
+    margin-right: 30px;
+
+}
