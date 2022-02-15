@@ -4,15 +4,6 @@ require_once '../common/config.php';
 
 session_start();
 
-if(isset($_SESSION['login'])){
-    
-    $user = $_SESSION['login'];
-    
-    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id , DATE_FORMAT(debut, '%d') FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
-    $req->execute();
-    $result = $req->fetchAll();
-}
-
 $jour = date("w"); // numéro du jour actuel
 
 if (isset($_GET['jour'])) {
@@ -27,20 +18,23 @@ else if (!empty($_GET['week']) && ($_GET['week'] == "next")) { // Si on veut aff
 
     $jour = $jour - 7;
 }
- 
-$nom_mois = date("F"); // nom du mois actuel
-$annee = date("Y"); // année actuelle
+
 
 $nom_mois = date("F", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
 $annee = date("Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
 $num_week = date("W", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
- 
-$dateDebSemaine = date("Y-m-d", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-$dateFinSemaine = date("Y-m-d", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
-     
-$dateDebSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-$dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
 
+$dateDebSemaine = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+$dateFinSemaine = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
+
+if(isset($_SESSION['login'])){
+    
+    $user = $_SESSION['login'];
+    
+    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id , DATE_FORMAT(debut, '%d') FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
+    $req->execute();
+    $result = $req->fetchAll();
+}
 
 ?>
 <!DOCTYPE html>
@@ -67,7 +61,7 @@ $dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date(
 
 		echo '<div>
 				<a href="planning.php?week=pre&jour='.$jour.'"><<</a> Semaine '.$num_week.' <a href="planning.php?week=next&jour='.$jour.'">>></a><br />
-					du '.$dateDebSemaineFr.' au '.$dateFinSemaineFr.'
+					du '.$dateDebSemaine.' au '.$dateFinSemaine.'
 			</div>';
 
 		?>
@@ -79,8 +73,7 @@ $dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date(
 			
 				$tab_jours = array('', 1 => 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi');
 				$tab_jour_num = array('', 1 => '1', '2', '3', '4', '5');
-			
-				$nom_mois = date('M');
+		
 			
 				echo '<br/>
 				<section>
@@ -112,36 +105,34 @@ $dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date(
 			
 				$resa = 0;
 			
-				foreach ($result as $value) {
+					foreach ($result as $value) {
 
-					//var_dump($result);
-			
-					$value[2] =  date("H:i", strtotime($value[2]));
-					$value[3] =  date("H:i", strtotime($value[3]));
-					$value[6] =  date("d:m:Y");
- 			
-					if ($value[2] == $h && $value[1] == $tab_jour_num[$j]) {
+						//var_dump($result);
+				
+						$value[2] =  date("H:i", strtotime($value[2]));
+						$value[3] =  date("H:i", strtotime($value[3]));
+				
+						if ($value[2] == $h && $value[1] == $tab_jour_num[$j]) {
+				
+							$resa = 1;
 
-						//var_dump($value[6]);
-			
-						$resa = 1;
-			
-						echo '<div class="reserver">';
-						echo 'Titre :' . $value[0] . '</br>';
-						echo 'De ' . $value[2] . ' à ' . $value[3] . ' H </br>';
-						echo 'Créateur : ' . $value[4] . '</br>';
-			
-						if (isset($_SESSION["user"])) {
-							echo ' <a href = "reservation.php?id=' . $value[5] . '">Réservation</a></td>';
+				
+							echo '<div class="reserver">';
+							echo 'Titre :' . $value[0] . '</br>';
+							echo 'De ' . $value[2] . ' à ' . $value[3] . ' H </br>';
+							echo 'Créateur : ' . $value[4] . '</br>';
+				
+							if (isset($_SESSION["user"])) {
+								echo ' <a href = "reservation.php?id=' . $value[5] . '">Réservation</a></td>';
+							}
+				
+							echo '</div>';
 						}
-			
-						echo '</div>';
 					}
-				}
-				if ($resa == 0) {
-					echo '<a href="reservation-form.php">Disponible</a>';
-				}
-				echo '</td>';
+					if ($resa == 0) {
+						echo '<a href="reservation-form.php">Disponible</a>';
+					}
+					echo '</td>';
 			}
 			'</tr>';
 			}
@@ -163,4 +154,3 @@ $dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date(
         </footer>
 </body>
 </html>
-
