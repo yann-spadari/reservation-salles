@@ -7,7 +7,7 @@
     <?php if(isset($_SESSION['id'])) : ?>
       
       <li><a href="planning.php">Planning</a></li>
-      <li><a href="../common/deconnexion.php">Réservation</a></li>
+      <li><a href="reservation.php">Réservation</a></li>
       <li><a href="profil.php">Profil</a></li>
       <li><a href="../common/deconnexion.php">Déconnexion</a></li>
 
