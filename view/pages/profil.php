@@ -46,7 +46,7 @@ $row = $check->rowCount();
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
-    <title>Innovatech - Profil</title>
+    <title> - Profil</title>
     <link rel="stylesheet" href="../../public/css/styles.css">
 </head>
 <body>
@@ -59,7 +59,7 @@ $row = $check->rowCount();
 
         </header>
 
-        <main class="main2">
+        <main>
             
             <div class="center">
                 
@@ -69,28 +69,21 @@ $row = $check->rowCount();
                 <form method="post">
                     
                     <div class="txt_field">
-                        <input type="text" name="login" autocomplete="off" value=<?php echo $data['login']; ?>>
+                        <input type="text" name="login" autocomplete="off" placeholder="Nom d'utilisateur" value=<?php echo $data['login']; ?>>
                         <span></span>
                         
                     </div>
                 
                     <div class="txt_field">
-                        <input type="password" name="current_password" required autocomplete="off">
-                        <span></span>
-                        <label>Mot de passe</label>
-                    </div>
-
-
-                    <div class="txt_field">
-                        <input type="password" name="password" autocomplete="off">
-                        <span></span>
-                        <label>Nouveau mot de passe</label>
+                        <input type="password" name="current_password" placeholder="Mot de passe actuel" required autocomplete="off">
                     </div>
 
                     <div class="txt_field">
-                        <input type="password" name="cpassword" autocomplete="off">
-                        <span></span>
-                        <label>Confirmation du mot de passe</label>
+                        <input type="password" name="password" placeholder="Nouveau mot de passe" autocomplete="off">
+                    </div>
+
+                    <div class="txt_field">
+                        <input type="password" name="cpassword" placeholder="Confirmation du mot de passe"autocomplete="off">
                     </div>
                 
                     <input type="submit" name="formsend" value="Sauvegarder">
@@ -102,7 +95,6 @@ $row = $check->rowCount();
         // Empêcher les failles XSS
 
         $login = htmlspecialchars($_POST['login']);
-        $email = htmlspecialchars($_POST['email']);
         $current_password = htmlspecialchars($_POST['current_password']);
         $password = htmlspecialchars($_POST['password']);
         $cpassword = htmlspecialchars($_POST['cpassword']);
@@ -111,14 +103,14 @@ $row = $check->rowCount();
 
         if (password_verify($current_password, $_SESSION['password'])) { 
             
-            if ($_POST['login'] !== $data['login'] || $_POST['email'] !== $data['email']) {
+            if ($_POST['login'] !== $data['login']) {
 
                 // Mise à jour des données entrées par l'utilisateur
 
-                $update = $db->prepare("UPDATE utilisateurs SET login= ?, email = ? WHERE id = ?");
-                $update->execute(array($_POST['login'], $_POST['email'], $_SESSION['id']));
+                $update = $db->prepare("UPDATE utilisateurs SET login= ? WHERE id = ?");
+                $update->execute(array($_POST['login'], $_SESSION['id']));
 
-                // Si mise à jour 'Login & Email' réussie
+                // Si mise à jour 'Login' réussie
 
                 echo '<div class= "success_php">' . "Vos données ont été modifiées." . "</br>" . '</div>';
                 
@@ -224,7 +216,6 @@ $row = $check->rowCount();
         // Empêcher les failles XSS
 
         $login = htmlspecialchars($_POST['login']);
-        $email = htmlspecialchars($_POST['email']);
         $current_password = htmlspecialchars($_POST['current_password']);
         $password = htmlspecialchars($_POST['password']);
         $cpassword = htmlspecialchars($_POST['cpassword']);
@@ -237,10 +228,8 @@ $row = $check->rowCount();
 
                 // Mise à jour des données entrées par l'utilisateur
 
-                $update = $db->prepare("UPDATE utilisateurs SET login= ?, email = ? WHERE id = ?");
-                $update->execute(array($_POST['login'], $_POST['email'], $_SESSION['id']));
-
-                // Si mise à jour 'Prénom et Nom' réussie
+                $update = $db->prepare("UPDATE utilisateurs SET login= ? WHERE id = ?");
+                $update->execute(array($_POST['login'], $_SESSION['id']));
 
                 // echo '<div class= "success_php">' . "Vos données ont été modifiées." . "</br>" . '</div>';
                 
