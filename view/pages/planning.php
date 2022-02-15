@@ -8,10 +8,39 @@ if(isset($_SESSION['login'])){
     
     $user = $_SESSION['login'];
     
-    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
-    $req->execute(array());
+    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id , DATE_FORMAT(debut, '%d') FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
+    $req->execute();
     $result = $req->fetchAll();
 }
+
+$jour = date("w"); // numéro du jour actuel
+
+if (isset($_GET['jour'])) {
+    $jour = ($_GET['jour']);
+}
+ 
+if (!empty($_GET['week']) && ($_GET['week'] == "pre")) { // Si on veut afficher la semaine précédente
+	
+    $jour = $jour + 7;
+}
+else if (!empty($_GET['week']) && ($_GET['week'] == "next")) { // Si on veut afficher la semaine suivante
+
+    $jour = $jour - 7;
+}
+ 
+$nom_mois = date("F"); // nom du mois actuel
+$annee = date("Y"); // année actuelle
+
+$nom_mois = date("F", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+$annee = date("Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+$num_week = date("W", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+ 
+$dateDebSemaine = date("Y-m-d", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+$dateFinSemaine = date("Y-m-d", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
+     
+$dateDebSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+$dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
+
 
 ?>
 <!DOCTYPE html>
@@ -34,19 +63,15 @@ if(isset($_SESSION['login'])){
         </header>
      
 		<main>
+		<?php
 
-			<div class="jour">
-				<p>
-					<?php
+		echo '<div>
+				<a href="planning.php?week=pre&jour='.$jour.'"><<</a> Semaine '.$num_week.' <a href="planning.php?week=next&jour='.$jour.'">>></a><br />
+					du '.$dateDebSemaineFr.' au '.$dateFinSemaineFr.'
+			</div>';
 
-					$jour = date("w");
-					$dateDebutSemaine = date("d/m/Y", mktime(0, 0, 0, date("n"), date("d") - $jour + 1, date("y")));
-					$dateFinSemaine= date("d/m/Y", mktime(0, 0, 0, date("n"), date("d") - $jour + 7, date("y")));
-					echo '<div>Semaine du  : ' . $dateDebutSemaine . ' au ' . $dateFinSemaine . ' </div> '; ?>
+		?>
 
-				</p>
-			
-			</div>
 					
 			<section class="planning">
 				
@@ -88,11 +113,16 @@ if(isset($_SESSION['login'])){
 				$resa = 0;
 			
 				foreach ($result as $value) {
+
+					//var_dump($result);
 			
 					$value[2] =  date("H:i", strtotime($value[2]));
 					$value[3] =  date("H:i", strtotime($value[3]));
-			
+					$value[6] =  date("d:m:Y");
+ 			
 					if ($value[2] == $h && $value[1] == $tab_jour_num[$j]) {
+
+						//var_dump($value[6]);
 			
 						$resa = 1;
 			
