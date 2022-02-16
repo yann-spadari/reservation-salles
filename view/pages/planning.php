@@ -3,7 +3,6 @@ session_start();
 
 require '../common/config.php';
 
-
 $jour = date("w"); // numéro du jour actuel
 $nom_mois = date("F"); // nom du mois actuel
 $annee = date("Y"); // année actuelle
@@ -59,8 +58,7 @@ if(isset($_SESSION['login'])){
 			
 				// en tête de colonne
 				echo '<tr>';
-				for($k = 0; $k < 6; $k++)
-				{
+				for($k = 0; $k < 6; $k++) {
 					if($k==0)
 						echo '<th>'.$jourTexte[$k].'</th>';
 					else
@@ -69,7 +67,6 @@ if(isset($_SESSION['login'])){
 				}
 				echo '</tr>';
 			
-				// les 2 plages horaires : matin - midi
 
 				for ($h = 8; $h <= 18; $h++) {
 					echo '<tr>
@@ -89,6 +86,8 @@ if(isset($_SESSION['login'])){
 					
 							$value[2] =  date("H:i", strtotime($value[2]));
 							$value[3] =  date("H:i", strtotime($value[3]));
+
+							
 
 							if ($value[2] == $h && $value[1] == $jourNum[$j]) {
 					
@@ -112,7 +111,7 @@ if(isset($_SESSION['login'])){
 							echo '<a href="reservation-form.php">Disponible</a>';
 						}
 						echo '</td>';
-				}
+					}
 				'</tr>';
 				}
 			echo '</table>';
