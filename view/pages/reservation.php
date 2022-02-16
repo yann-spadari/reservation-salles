@@ -32,16 +32,29 @@ $req->execute(array());
 
         <main>
 
+            <h1>Evenement</h1>
+
             <section>
 
                 <?php while($data = $req->fetch(PDO::FETCH_ASSOC)): ?>
 
+                    <table class="reservation">
+                        <tr>
+                            <th>nom :</th>
+                            <th>titre de l'évenement :</th>
+                            <th>description :</th>
+                            <th>Heure de début:</th>
+                            <th>Heure de fin :</th>
+                        </tr>
 
-                    <p>nom :<?= $data['login'] ?></p>
-                    <p>titre de l'évenement :<?= $data['titre'] ?></p>
-                    <p>description :<?= $data['description'] ?></p>
-                    <p>Heure de début:<?= $data['debut'] ?></p>
-                    <p>Heure de fin :<?= $data['fin'] ?></p>
+                        <tr>
+                            <td><?= $data['login'] ?></td>
+                            <td><?= $data['titre'] ?></td>
+                            <td><?= $data['description'] ?></td>
+                            <td><?= $data['debut'] ?></td>
+                            <td><?= $data['fin'] ?></td>
+                        </tr>
+                    </table>
                 <?php endwhile; ?>
             </section>
 
