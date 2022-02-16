@@ -1,9 +1,12 @@
 <?php
+require '../common/config.php';
 
 session_start();
 
-require '../common/config.php';
-
+if (!isset($_SESSION['login'])) {
+	header("location: connexion.php");
+	exit;
+}
 
 $req = $db->prepare("SELECT utilisateurs.login, titre, description,DATE_FORMAT(debut,'%H:%i') as 'debut', DATE_FORMAT(fin,'%H:%i') as 'fin' FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id");
 //$resultat = $req->fetchAll(PDO::FETCH_ASSOC);

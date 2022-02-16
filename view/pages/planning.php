@@ -1,7 +1,13 @@
 <?php 
-session_start();
 
 require '../common/config.php';
+
+session_start();
+
+if (!isset($_SESSION['login'])) {
+	header("location: connexion.php");
+	exit;
+}
 
 $jour = date("w"); // numéro du jour actuel
 $nom_mois = date("F"); // nom du mois actuel
