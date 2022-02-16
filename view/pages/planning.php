@@ -1,8 +1,7 @@
 <?php 
-
-require_once '../common/config.php';
-
 session_start();
+
+require '../common/config.php';
 
 $jour = date("w"); // numéro du jour actuel
 
@@ -18,20 +17,30 @@ else if (!empty($_GET['week']) && ($_GET['week'] == "next")) { // Si on veut aff
 
     $jour = $jour - 7;
 }
+ 
+$nom_mois = date("F"); // nom du mois actuel
+$annee = date("Y"); // année actuelle
+$num_week = date("W"); // numéro de la semaine actuelle
+ 
+if (isset($_GET['week']))
+{
+    $nom_mois = date("M", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+    $annee = date("Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+    $num_week = date("W", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+}
 
-
-$nom_mois = date("F", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-$annee = date("Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-$num_week = date("W", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-
-$dateDebSemaine = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-$dateFinSemaine = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
+$dateDebSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
+$dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
+ 
+$jourTexte = array('',1=>'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
+$plageH = array(1=>'09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00');
+$jourNum = array('', 1 => '1', '2', '3', '4', '5');
 
 if(isset($_SESSION['login'])){
     
     $user = $_SESSION['login'];
     
-    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id , DATE_FORMAT(debut, '%d') FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
+    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
     $req->execute();
     $result = $req->fetchAll();
 }
@@ -57,90 +66,78 @@ if(isset($_SESSION['login'])){
         </header>
      
 		<main>
-		<?php
-
-		echo '<div>
-				<a href="planning.php?week=pre&jour='.$jour.'"><<</a> Semaine '.$num_week.' <a href="planning.php?week=next&jour='.$jour.'">>></a><br />
-					du '.$dateDebSemaine.' au '.$dateFinSemaine.'
-			</div>';
-
-		?>
-
-					
+				
 			<section class="planning">
-				
-				<?php
-			
-				$tab_jours = array('', 1 => 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi');
-				$tab_jour_num = array('', 1 => '1', '2', '3', '4', '5');
-		
-			
-				echo '<br/>
-				<section>
 
-				<div><strong>' . $nom_mois . ' ' . date('Y') . '</strong></div>';
+			<?php
 			
-				echo '<table>';
+			echo '<br/>
+			<div id="titreMois" align="center">
+				<h2>'.$nom_mois.' '.$annee.'</h2>
+			</div>';
+			
+			echo '<table border="1" align="center">';
+			
+				// en tête de colonne
+				echo '<tr>';
+				for($k = 0; $k < 6; $k++)
+				{
+					if($k==0)
+						echo '<th>'.$jourTexte[$k].'</th>';
+					else
+						echo '<th><div>'.$jourTexte[$k].' '.date("d", mktime(0,0,0,date("n"),date("d")-$jour+$k,date("y"))).'</div></th>';
+					
+				}
+				echo '</tr>';
+			
+				// les 2 plages horaires : matin - midi
 
-			echo '<tr>';
-			
-			for ($k = 0; $k < 6; $k++) {
-				if ($k == 0)
-					echo '<th>' . $tab_jours[$k] . '</th>';
-				else
-					echo '<th><div>' . $tab_jours[$k] . ' ' . date("d", mktime(0, 0, 0, date("n"), date("d") - $jour + $k, date("y"))) . ' ' . $nom_mois . '</div></th>';
-			}
-			echo '</tr>';
-			
+				for ($h = 8; $h <= 18; $h++) {
+					echo '<tr>
+					<th>
+						<div>'. $h.'h00 - '.($h+1).'h00'. '</div>
+					</th>';
+				
+					// affichage planning jour
+					for ($j = 1; $j < 6; $j++) {
+						echo '<td>';
+				
+					$resa = 0;
+				
+						foreach ($result as $value) {
 
-			for ($h = 8; $h <= 18; $h++) {
-				echo '<tr>
-				<th>
-					<div>'. $h.'h00 - '.($h+1).'h00'. '</div>
-				</th>';
-			
-				// affichage planning jour
-				for ($j = 1; $j < 6; $j++) {
-					echo '<td>';
-			
-				$resa = 0;
-			
-					foreach ($result as $value) {
+							//var_dump($result);
+					
+							$value[2] =  date("H:i", strtotime($value[2]));
+							$value[3] =  date("H:i", strtotime($value[3]));
 
-						//var_dump($result);
-				
-						$value[2] =  date("H:i", strtotime($value[2]));
-						$value[3] =  date("H:i", strtotime($value[3]));
-				
-						if ($value[2] == $h && $value[1] == $tab_jour_num[$j]) {
-				
-							$resa = 1;
+							if ($value[2] == $h && $value[1] == $jourNum[$j]) {
+					
+								$resa = 1;
 
-				
-							echo '<div class="reserver">';
-							echo 'Titre :' . $value[0] . '</br>';
-							echo 'De ' . $value[2] . ' à ' . $value[3] . ' H </br>';
-							echo 'Créateur : ' . $value[4] . '</br>';
-				
-							if (isset($_SESSION["user"])) {
-								echo ' <a href = "reservation.php?id=' . $value[5] . '">Réservation</a></td>';
+								echo '<a href = "reservation.php?id=' . $value[5] . '">';
+								echo '<div class="reserver">';
+								echo 'Titre :' . $value[0] . '</br>';
+								echo 'De ' . $value[2] . ' à ' . $value[3] . ' H </br>';
+								echo 'Créateur : ' . $value[4] . '</br>';
+								echo '</a>';
+					
+								if (isset($_SESSION["user"])) {
+									echo ' <a href = "reservation.php?id=' . $value[5] . '">Réservation</a></td>';
+								}
+					
+								echo '</div>';
 							}
-				
-							echo '</div>';
 						}
-					}
-					if ($resa == 0) {
-						echo '<a href="reservation-form.php">Disponible</a>';
-					}
-					echo '</td>';
-			}
-			'</tr>';
-			}
-				echo '</table>';
-				echo '</div></section>';
-			
-				?>
-			
+						if ($resa == 0) {
+							echo '<a href="reservation-form.php">Disponible</a>';
+						}
+						echo '</td>';
+				}
+				'</tr>';
+				}
+			echo '</table>';
+			?>
 			</section>
 		
 		
