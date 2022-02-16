@@ -73,7 +73,11 @@ if(isset($_SESSION['login'])){
 			
 			echo '<br/>
 			<div id="titreMois" align="center">
+<<<<<<< HEAD
 				<h1>'.$nom_mois.' '.$annee.'</h1>
+=======
+				<h2>'.$nom_mois.' '.$annee.'</h2>
+>>>>>>> 0c5ef9b48843f9bdf50bef75f25c6b5205ea7cd2
 			</div>';
 			
 			echo '<table border="1" align="center">';
