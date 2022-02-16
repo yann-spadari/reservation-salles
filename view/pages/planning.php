@@ -3,37 +3,16 @@ session_start();
 
 require '../common/config.php';
 
+
 $jour = date("w"); // numéro du jour actuel
-
-if (isset($_GET['jour'])) {
-    $jour = ($_GET['jour']);
-}
- 
-if (!empty($_GET['week']) && ($_GET['week'] == "pre")) { // Si on veut afficher la semaine précédente
-	
-    $jour = $jour + 7;
-}
-else if (!empty($_GET['week']) && ($_GET['week'] == "next")) { // Si on veut afficher la semaine suivante
-
-    $jour = $jour - 7;
-}
- 
 $nom_mois = date("F"); // nom du mois actuel
 $annee = date("Y"); // année actuelle
 $num_week = date("W"); // numéro de la semaine actuelle
- 
-if (isset($_GET['week']))
-{
-    $nom_mois = date("M", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-    $annee = date("Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-    $num_week = date("W", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
-}
 
 $dateDebSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+1,date("y")));
 $dateFinSemaineFr = date("d/m/Y", mktime(0,0,0,date("n"),date("d")-$jour+7,date("y")));
  
 $jourTexte = array('',1=>'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
-$plageH = array(1=>'09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00');
 $jourNum = array('', 1 => '1', '2', '3', '4', '5');
 
 if(isset($_SESSION['login'])){
