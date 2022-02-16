@@ -1,6 +1,6 @@
 <nav>
   
-  <a class="logo" href="accueil.php">eBLOG</a>
+  <a class="logo" href="accueil.php">CineKing</a>
 
   <ul>
     
