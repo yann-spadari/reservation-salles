@@ -45,7 +45,7 @@ if(isset($_SESSION['login'])){
 
         <header class="header">
 
-            <?php include ('../common/header.php '); ?>
+            <?php include ('../common/header.php'); ?>
 
         </header>
      
