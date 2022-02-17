@@ -148,8 +148,8 @@ date_default_timezone_set('Europe/Paris');
         // $heureActuelle = date("H:i:s");
         $DateAndTime = intval(strtotime($today));
 
-        $check = $db->prepare('SELECT * FROM reservations WHERE id = ?');
-        $check->execute(array('id'));
+        $check = $db->prepare('SELECT * FROM reservations WHERE debut = ?');
+        $check->execute(array($debut));
         $data = $check->fetch();
         $row = $check->rowCount();
 
