@@ -4,11 +4,6 @@ require '../common/config.php';
 
 session_start();
 
-if (!isset($_SESSION['login'])) {
-	header("location: connexion.php");
-	exit;
-}
-
 $jour = date("w"); // numéro du jour actuel
 $nom_mois = date("F"); // nom du mois actuel
 $annee = date("Y"); // année actuelle
@@ -26,6 +21,11 @@ if(isset($_SESSION['login'])){
     
     $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE()) AND utilisateurs.id = :id ");
     $req->execute(array('id' => $_SESSION['id']));
+    $result = $req->fetchAll();
+
+} else {
+	$req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
+    $req->execute();
     $result = $req->fetchAll();
 }
 
@@ -99,9 +99,9 @@ if(isset($_SESSION['login'])){
 					
 								$resa = 1;
 
-								var_dump($value[5]);
+								//var_dump($value[5]);
 
-								echo '<a href = "reservation.php?id=' . $value[5] . '">';
+								echo '<a href = "evenement.php?id=' . $value[5] . '">';
 								echo '<div class="reserver">';
 								echo 'Titre :' . $value[0] . '</br>';
 								echo 'De ' . $value[2] . ' à ' . $value[3] . ' H </br>';
