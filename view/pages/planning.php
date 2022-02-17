@@ -24,8 +24,8 @@ if(isset($_SESSION['login'])){
     
     $user = $_SESSION['login'];
     
-    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE())");
-    $req->execute();
+    $req = $db->prepare("SELECT titre, DATE_FORMAT(fin, '%w'), DATE_FORMAT(debut,'%T'), DATE_FORMAT(fin,'%T'),utilisateurs.login, reservations.id FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE week(reservations.debut) = WEEK(CURDATE()) AND utilisateurs.id = :id ");
+    $req->execute(array('id' => $_SESSION['id']));
     $result = $req->fetchAll();
 }
 
@@ -99,6 +99,8 @@ if(isset($_SESSION['login'])){
 					
 								$resa = 1;
 
+								var_dump($value[5]);
+
 								echo '<a href = "reservation.php?id=' . $value[5] . '">';
 								echo '<div class="reserver">';
 								echo 'Titre :' . $value[0] . '</br>';
@@ -106,7 +108,7 @@ if(isset($_SESSION['login'])){
 								echo 'Créateur : ' . $value[4] . '</br>';
 								echo '</a>';
 					
-								if (isset($_SESSION["user"])) {
+								if (isset($_SESSION["id"])) {
 									echo ' <a href = "reservation.php?id=' . $value[5] . '">Réservation</a></td>';
 								}
 					

@@ -8,9 +8,9 @@ if (!isset($_SESSION['login'])) {
 	exit;
 }
 
-$req = $db->prepare("SELECT utilisateurs.login, titre, description,DATE_FORMAT(debut,'%H:%i') as 'debut', DATE_FORMAT(fin,'%H:%i') as 'fin' FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id");
+$req = $db->prepare("SELECT reservations.id, utilisateurs.id, login, titre, description,DATE_FORMAT(debut,'%H:%i') as 'debut', DATE_FORMAT(fin,'%H:%i') as 'fin' FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE utilisateurs.id = :id_utilisateur");
 //$resultat = $req->fetchAll(PDO::FETCH_ASSOC);
-$req->execute(array());
+$req->execute(array('id_utilisateur' => $_SESSION['id']));
 
 ?>
 
