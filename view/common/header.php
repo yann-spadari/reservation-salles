@@ -1,13 +1,15 @@
 <nav>
   
-  <a class="logo" href="accueil.php">CineKing</a>
+  <a class="logo" href="accueil.php">Futsal</a>
 
   <ul>
     
+    <li><a href="planning.php">Planning</a></li>
+
     <?php if(isset($_SESSION['id'])) : ?>
       
-      <li><a href="planning.php">Planning</a></li>
-      <li><a href="reservation.php">Réservation</a></li>
+      
+      <li><a href="../pages/reservation-form.php">Réservation</a></li>
       <li><a href="profil.php">Profil</a></li>
       <li><a href="../common/deconnexion.php">Déconnexion</a></li>
 

@@ -45,7 +45,7 @@ if(isset($_SESSION['login'])){
 
         <header class="header">
 
-            <?php include ('../common/header.php '); ?>
+            <?php include ('../common/header.php'); ?>
 
         </header>
      
@@ -104,12 +104,11 @@ if(isset($_SESSION['login'])){
 								echo '<a href = "evenement.php?id=' . $value[5] . '">';
 								echo '<div class="reserver">';
 								echo 'Titre :' . $value[0] . '</br>';
-								echo 'De ' . $value[2] . ' à ' . $value[3] . ' H </br>';
 								echo 'Créateur : ' . $value[4] . '</br>';
 								echo '</a>';
 					
 								if (isset($_SESSION["id"])) {
-									echo ' <a href = "reservation.php?id=' . $value[5] . '">Réservation</a></td>';
+									echo ' <a href = "evenement.php?id=' . $value[5] . '">Réservation</a></td>';
 								}
 					
 								echo '</div>';
@@ -125,6 +124,7 @@ if(isset($_SESSION['login'])){
 			echo '</table>';
 			?>
 			</section>
+
 		
 		
 		</main>

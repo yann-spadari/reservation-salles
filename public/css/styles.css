@@ -20,14 +20,13 @@
     list-style: none;
 }
 
-h1 {
-    text-align: center;
-    padding: 30px 0px;
-}
-
 html{
     font-family: 'Roboto', sans-serif;
   
+}
+
+body {
+    overflow-x: hidden;
 }
 
 a { color:black; }
@@ -38,10 +37,10 @@ header nav{
     
     display: flex;
     justify-content: space-between;
-    margin: 35px;
+    margin: 20px;
+    
 
 }
-
 
 
 header nav ul{
@@ -80,13 +79,41 @@ header ul a:hover{
 /* MAIN CSS */
 
 main {
-    min-height: 80vh;
-    background-color: brown;
+    min-height: 110vh;
+    background-color: #538622;
+}
+
+
+/* ACCUEIL */
+
+.text {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.text h1 {
+    margin: 20px 0;
+}
+
+.text img {
+    margin: 20px 0;
+}
+
+.text p {
+    margin: 20px 0;
+}
+
+.text a {
+    font-size: 20px;
 }
 
 /* FORMULAIRE CONNEXION & INSCRIPTION & PROFIL CSS */
 
 .center{
+    margin-top: 30px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -98,7 +125,6 @@ main {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-top: 16px; 
   }
   
 .center h1{
@@ -143,7 +169,6 @@ form .txt_field{
     width: 100%;
     height: 50px;
     background: #2691d9;
-    border: 1px solid;
     color: white;
     border-radius: 25px;
     font-size: 18px;
@@ -152,12 +177,17 @@ form .txt_field{
     outline: none;
     }
   
-input[type="submit"]:hover{
-    background-color: #2691d9;
-    color: white;
-    border-color: white;
-    transition: .5s;
-  }
+textarea {
+    margin: 14px 0;
+    resize: none;
+    width: 320px;
+    height: 100px;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #adadad;
+    padding: 2rem;
+}    
 
 .signup_link{
     margin: 30px 0;
@@ -171,37 +201,23 @@ input[type="submit"]:hover{
     text-decoration: none;
   }
   
-#warning {
+.warning {
     font-size: 13px;
     text-align: center;
     margin: 10px 10px;
     color:rgb(207, 89, 89);
 }
 
-/* PLANNING */
-
-.planning table {
-    margin: auto;
+.heure {
+    display: flex;
+    justify-content: center;
 }
 
-.planning td {
-    width : 150px;
-    height : 40px;
-}
-/* RESERVATION */
-
-.reservation {
-    margin: auto;
-    width: 1000px;
+.center select {
+    margin: 0 15px; 
+    font-size: 16px;    
 }
 
-.reservation tr {
-    text-align: center;
-}
-
-.reservation th, td {
-    border: 1px solid black;
-}
 /* ERREUR CSS */
 
 .error_php {
@@ -233,6 +249,7 @@ input[type="submit"]:hover{
     color: rgb(22, 165, 70);
 }
 
+
 /* FOOTER CSS */
 
 footer {
@@ -241,6 +258,37 @@ footer {
     position:absolute;
     width: 100%;
     text-align: center;
+
+}
+
+/* PLANNING */
+
+h1 { 
+    text-align: center;
+}
+
+
+.planning table {
+    margin: auto;
+}
+
+.planning td {
+    width : 150px;
+    height : 40px;
+}
+/* RESERVATION */
+
+.reservation {
+    margin: 50px auto;
+    width: 1000px;
+}
+
+.reservation tr {
+    text-align: center;
+}
+
+.reservation th, td {
+    border: 1px solid black;
 }
 
 footer ul li {
@@ -262,3 +310,4 @@ footer ul li a{
     margin-right: 30px;
 
 }
+

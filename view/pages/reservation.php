@@ -3,14 +3,9 @@ require '../common/config.php';
 
 session_start();
 
-if (!isset($_SESSION['login'])) {
-	header("location: connexion.php");
-	exit;
-}
-
-$req = $db->prepare("SELECT reservations.id, utilisateurs.id, login, titre, description,DATE_FORMAT(debut,'%H:%i') as 'debut', DATE_FORMAT(fin,'%H:%i') as 'fin' FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id WHERE utilisateurs.id = :id_utilisateur");
+$req = $db->prepare("SELECT utilisateurs.login, titre, description,DATE_FORMAT(debut,'%H:%i') as 'debut', DATE_FORMAT(fin,'%H:%i') as 'fin' FROM reservations INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id");
 //$resultat = $req->fetchAll(PDO::FETCH_ASSOC);
-$req->execute(array('id_utilisateur' => $_SESSION['id']));
+$req->execute(array());
 
 ?>
 
@@ -21,7 +16,7 @@ $req->execute(array('id_utilisateur' => $_SESSION['id']));
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/styles.css">
-    <title>Reservation</title>
+    <title>Futsal - Réservation</title>
 </head>
 <body>
     
@@ -35,9 +30,11 @@ $req->execute(array('id_utilisateur' => $_SESSION['id']));
 
         <main>
 
+            <div class="evenement">
+
             <h1>Evenement</h1>
 
-            <section>
+            <div>
 
                 <?php while($data = $req->fetch(PDO::FETCH_ASSOC)): ?>
 
@@ -59,7 +56,8 @@ $req->execute(array('id_utilisateur' => $_SESSION['id']));
                         </tr>
                     </table>
                 <?php endwhile; ?>
-            </section>
+                </div>
+                </div>
 
         </main>
 
